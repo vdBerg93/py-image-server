@@ -1,10 +1,12 @@
-import unittest
-from http.server import ThreadingHTTPServer
-from imageserver.server import MyServer
-
 import urllib.request
 
-class TestHttpServer(unittest.TestCase):
-    def test_server(self):
-        contents = urllib.request.urlopen("http://localhost:8888/test")
-        print(contents)
+# def test_server_request():
+#     contents = urllib.request.urlopen("http://localhost:8888/test")
+
+def test_single_image():
+    images = "testimages/cyclo1.jpg"
+    outputs = "testimages/cyclo1_processed.jpg"
+    operations = "resize=[500,500],blur=0.5,split=[2,2]"
+    path = "inputs:[{}]&outputs:[{}]&operations:[{}]".format(images, outputs, operations)
+    contents = urllib.request.urlopen("http://localhost:8888/"+path)
+    print(contents)
