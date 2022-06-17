@@ -3,8 +3,14 @@
 # class Image():
 #     def __init__(self, ):
 
+import time
+def ProcessRequest(item):
+    print("Test")
+    time.sleep(30)
+    print("Finished processing")
 
-class ImageProcessor():
+
+class Image():
     def __init__(self, request):
         print(request)
         print("running processor")

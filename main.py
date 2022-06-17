@@ -2,6 +2,9 @@ from typing import List
 from fastapi import FastAPI
 from pydantic import BaseModel
 import uvicorn
+import time
+from multiprocessing import Process
+from imageprocessor import ProcessRequest
 
 app = FastAPI()
 
@@ -11,8 +14,19 @@ class Item(BaseModel):
     operations: List[str] = []
 
 @app.post("/items/")
-async def create_item(item: Item):
+def create_item(item: Item):
+    print("Processing request. Sleeping for 100")
+    results = ProcessRequest(item)
+    # Process(target=ProcessRequest, args=(item,))
+    # time.sleep(100)
     return item
+
+@app.get("/testconcurrency/")
+def test_concurrency():
+    print("Processing request. Sleeping for 30 seconds")
+    time.sleep(30)
+    print("Finished processing")
+    return {"message":"Finished processing"}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="localhost", port=8888)

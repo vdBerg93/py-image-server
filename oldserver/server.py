@@ -1,6 +1,6 @@
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from multiprocessing import Process
-from imageprocessor import ImageProcessor
+from oldserver import ImageProcessor
 
 class MyServer(BaseHTTPRequestHandler):
     def do_GET(self):
