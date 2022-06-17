@@ -4,14 +4,18 @@ from pydantic import BaseModel
 import uvicorn
 import time
 from multiprocessing import Process
-from imageprocessor import ProcessRequest
+from imageprocessor import ProcessRequest, Image
 
 app = FastAPI()
 
 class Item(BaseModel):
-    inputs: List[str] = []
-    outputs: List[str] = []
-    operations: List[str] = []
+    images: List[Image] = []
+    operations: List[str] | None = None
+
+# class Item(BaseModel):
+#     inputs: List[str] = []
+#     outputs: List[str] = []
+#     operations: List[str] = []
 
 @app.post("/items/")
 def create_item(item: Item):

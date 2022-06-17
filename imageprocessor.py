@@ -1,17 +1,17 @@
+from pydantic import BaseModel
+
+def ProcessRequest(request):
+    images = []
+    # for i
+    # images.append(Image())
+
+class Image(BaseModel):
+    input: str
+    output: str
 
 
-# class Image():
-#     def __init__(self, ):
-
-import time
-def ProcessRequest(item):
-    print("Test")
-    time.sleep(30)
-    print("Finished processing")
-
-
-class Image():
-    def __init__(self, request):
+class ImageProcessor():
+    def __init__(self, inputPath, outputPath):
         print(request)
         print("running processor")
         raise NotImplementedError
