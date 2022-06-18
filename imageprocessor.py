@@ -71,8 +71,8 @@ class ImageProcessor():
 
     def resize(self, arguments=str):
         scaling = float(arguments)
-        if scaling<=0 or scaling >= 100:
-            print("Resize scaling factor",scaling,"out of bounds [0,100]. Skipping operation")
+        if scaling<0.05 or scaling >= 100:
+            print("Resize scaling factor",scaling,"out of bounds [0.05,100]. Skipping operation")
             return
         processedImages = []
         for img in self.images:
