@@ -4,7 +4,7 @@ from typing import List
 import cv2
 from pydantic import BaseModel
 
-TESTING_CONCURRENCY = True
+TESTING_CONCURRENCY = False
 
 class Image(BaseModel):
     input: str
