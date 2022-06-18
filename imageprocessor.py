@@ -1,8 +1,8 @@
-from typing import List
-from pydantic import BaseModel
 import os
-import cv2
 import time
+from typing import List
+import cv2
+from pydantic import BaseModel
 
 class Image(BaseModel):
     input: str
