@@ -137,8 +137,8 @@ Note: At this point the software has only been tested and developed for a reques
 A production ready version should deal with wrong requests without crashing by checking if it is in the correct format.
 
 ## Concurrency test
-The server is capable of processing concurrent requests. 
-This was verified with a concurrency testing mode that can be activated at the top of the file: **_imageprocessor.py_**
+The concurrency is realized through the fastAPI callback definition, which can easily facilitate parallel processing.
+The concurrent processing was verified with a concurrency testing mode that can be activated at the top of the file: **_imageprocessor.py_**:
 
     import os
     import time
