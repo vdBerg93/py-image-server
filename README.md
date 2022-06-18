@@ -4,17 +4,21 @@ The HTTP server is realized with fastAPI, running through uvicorn.
 The image processing functionalities are implemented with opencv.
 
 The user sends a request in JSON format through the API to the webserver.
-The webserver picks up the request in a parallel process and processes the images.
+The webserver picks up the request in a parallel process and performs the desired image operations.
 Images are stored locally on the server, and the request defines the paths on the server.
 
-# [1] Design of the software
+**Contents:**
+1. Design of the software
+2. Installation and first run
+3. Test cases
+4. Development time log
 
-## Software overview
+# [1] Design of the software
 The software consists of two main components:
 1. A webserver based on fastAPI that handles HTTP requests in JSON format in concurrent processes
 2. An image processor that offers a variety of image modifications
 
-## Server implementation
+## Server design
 The webserver is based on the fastAPI package, and is run with Uvicorn.
 The requests are defined using the fastAPI JSON format: 
 
@@ -29,6 +33,22 @@ The requests are defined using the fastAPI JSON format:
                      "operationN"]
     }
 
+* input: the path to the image
+* output: the output path for the processed image
+* operation: processing method name and arguments
+
+An example of a request looks as follows:
+
+    request_JSON = {
+      "images":[{"input":os.path.join(inputPath,"cyclo1.jpg"),"output":os.path.join(outputPath,"cyclo1_processed.jpg")},
+                {"input":os.path.join(inputPath,"cyclo2.jpg"),"output":os.path.join(outputPath,"cyclo2_processed.PNG")},
+                {"input":os.path.join(inputPath,"cyclo3.jpg"),"output":os.path.join(outputPath,"cyclo3_processed.jpg")},
+                {"input":os.path.join(inputPath,"cyclo4.jpg"),"output":os.path.join(outputPath,"cyclo4_processed.PNG")}],
+      "operations": ["splitQuadrants=True","resize=2","splitQuadrants=True","resize=2"]
+    }
+
+This loads in total 4 images, processes it with the defined operations from left to right: splitting into four quadrants, resizing with scalingfactor 2, splitting all 4 quadrants into 16 images, and again scaling with scale factor two. 
+The result is an 16 images with unique regions of the base image, with the same size as the original.
 
 ## Image processing functionalities
 There are in total 3 different functionalities in the image processor, 
@@ -49,6 +69,7 @@ The operations can be called through the following example
 Here, the resizing scaling factor is a float that denotes the percentag scaling to be done.
 If split in the operations list, it will work for any string besides "None", "false", or "False", which will skip splitting.
 The blur kernelSize is an integer that indicates the Gaussian blur kernel size. If this is zero, the kernelSize will be computed automatically from Sigma (https://www.tutorialkart.com/opencv/python/opencv-python-gaussian-image-smoothing/).
+If the user sends a request that has a configuration outside the bounds, it skips the operation.
 
 # [2] Installation and first run
 
@@ -62,6 +83,10 @@ Select your preference:
     cd path/to/py-image-server
     conda env create -f conda_environment.yml
     conda activate image-server
+
+After you're done with the software, run the following command to clean up:
+
+    conda remove --name image-server --all
 
 
 2. Create your own virtual environment and install dependencies with PIP:
@@ -98,7 +123,7 @@ Then, run a test by clicking "try it out" > "execute". This should show the foll
 
 When you receive this response the server works properly.
 
-# Test cases
+# [3] Test cases
 
 ## Main functionality pytest testing
 Now you know that the server works, extensive tests can be run by executing the following command:
@@ -107,6 +132,9 @@ Now you know that the server works, extensive tests can be run by executing the 
 
 The tests will send requests with images from the folder 'testimages', and store the processed images in 'testoutput'.
 In these folders, you can verify that indeed the required processing steps are okay.
+
+Note: At this point the software has only been tested and developed for a request format that exactly matches the defined template.
+A production ready version should deal with wrong requests without crashing by checking if it is in the correct format.
 
 ## Concurrency test
 The server is capable of processing concurrent requests. 
@@ -164,14 +192,8 @@ Example output:
 Here, no processors are actually spawned since the test messages are empty. 
 However, testing concurrency this is okay.
 
-## Cleaning up after use
-If using the Anaconda virtual environment, you can clean up by running:
+# [4] Development time log
 
-    conda remove --name image-server --all
-
-# [4] Time log
-
-    2 hours research
-    4 hours development
-    1 hour testing    
-    1 hours documentation & installation steps
+    1.5 hour research HTTP server, API & Concurrency
+    5 hours development & testing 
+    1.5 hours documentation & installation steps
