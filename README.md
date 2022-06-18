@@ -1,10 +1,22 @@
 # py-image-server
 A HTTP server which provides flexible image processing functionality.
+The HTTP server is realized with fastAPI, running through uvicorn.
+The image processing functionalities are implemented with opencv.
 
-## Request contents
-1. list of jpg image paths
-2. list of operations
-3. list of output paths for each image
+The user sends a request in JSON format through the API to the webserver.
+The webserver picks up the request in a parallel process and processes the images.
+
+## Request format
+    {
+        images:     [{"input":"inputPath1","output":"outputPath1"},
+                     {"input":"inputPath2","output":"outputPath2"},
+                     ...
+                     {"input":"inputPathN","output":"outputPathN"}],
+        operations: ["operation1", 
+                     "operation2",
+                     ...
+                     "operationN"]
+    }
 
 ## Image processing functionalities
 1. Resizing the image to any reasonable size smaller than the origin image.

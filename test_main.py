@@ -1,6 +1,5 @@
 from fastapi.testclient import TestClient
 from main import app
-import multiprocessing
 
 client = TestClient(app)
 
@@ -8,11 +7,11 @@ def test_create_item():
     inputPath = "testimages"
     outputPath = "testoutput"
     test_json = {
-      "images":[{"input":inputPath+"/cyclo01.jpg","output":outputPath+"/cycl01_processed.jpg"},
-                {"input":inputPath+"/cyclo02.jpg","output":outputPath+"/cycl02_processed.jpg"},
-                {"input":inputPath+"/cyclo03.jpg","output":outputPath+"/cycl03_processed.jpg"},
-                {"input":inputPath+"/cyclo04.jpg","output":outputPath+"/cycl04_processed.jpg"}],
-      "operations": ["operation1","operation2"]
+      "images":[{"input":inputPath+"/cyclo1.jpg","output":outputPath+"/cyclo1_processed.jpg"},
+                {"input":inputPath+"/cyclo2.jpg","output":outputPath+"/cyclo2_processed.jpg"},
+                {"input":inputPath+"/cyclo3.jpg","output":outputPath+"/cyclo3_processed.jpg"},
+                {"input":inputPath+"/cyclo4.jpg","output":outputPath+"/cyclo4_processed.jpg"}],
+      "operations": ["splitQuadrants=True","resize=1.5","blur=25"]
     }
     response = client.post(
         "/items/",
