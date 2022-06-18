@@ -1,4 +1,4 @@
-name: testenv
+name: image-server
 channels:
   - defaults
 dependencies:
@@ -46,4 +46,4 @@ dependencies:
     - typing-extensions==4.2.0
     - urllib3==1.26.9
     - uvicorn==0.17.6
-prefix: C:\Users\20204914\Anaconda3\envs\testenv
+prefix: C:\Users\20204914\Anaconda3\envs\image-server
