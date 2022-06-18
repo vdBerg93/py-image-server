@@ -135,7 +135,7 @@ def test_create_request_7_nonexistingfolder():
     assert response.status_code == 200
     assert response.json() == test_json
 
-def test_create_request_nonexistingfile():
+def test_create_request_8_nonexistingfile():
     inputPath = "testimages"
     outputPath = os.path.join("testoutput","nonexistingfolder")
     try:
