@@ -130,6 +130,10 @@ Now you know that the server works, extensive tests can be run by executing the 
 
     pytest test_main.py --verbose
 
+Or for extra debug logging the following command:
+
+    pytest test_main.py --verbose -s   
+
 The tests will send requests with images from the folder 'testimages', and store the processed images in 'testoutput'.
 In these folders, you can verify that indeed the required processing steps are okay.
 
