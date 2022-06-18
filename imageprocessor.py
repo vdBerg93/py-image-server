@@ -86,7 +86,7 @@ class ImageProcessor():
 
 
     def splitQuadrants(self, argument=str):
-        if argument == "None" or argument == "False":
+        if argument == "None" or argument.lower() == "false":
             print("Split argument is",argument,". Skipping quadrant splitting.")
             return
         processedImages = []
