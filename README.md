@@ -77,7 +77,7 @@ If the user sends a request that has a configuration outside the bounds, it skip
 
 Start your python command prompt. From here, you have a few options.
 Select your preference:
-1. (prefered) Create an Anaconda environment from conda_environment.yml:
+1. (recommended) Create an Anaconda environment from conda_environment.yml:
 
 
     cd path/to/py-image-server
