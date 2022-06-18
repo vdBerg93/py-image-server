@@ -8,9 +8,9 @@ def test_create_item():
     outputPath = "testoutput"
     test_json = {
       "images":[{"input":inputPath+"/cyclo1.jpg","output":outputPath+"/cyclo1_processed.jpg"},
-                {"input":inputPath+"/cyclo2.jpg","output":outputPath+"/cyclo2_processed.jpg"},
+                {"input":inputPath+"/cyclo2.jpg","output":outputPath+"/cyclo2_processed.PNG"},
                 {"input":inputPath+"/cyclo3.jpg","output":outputPath+"/cyclo3_processed.jpg"},
-                {"input":inputPath+"/cyclo4.jpg","output":outputPath+"/cyclo4_processed.jpg"}],
+                {"input":inputPath+"/cyclo4.jpg","output":outputPath+"/cyclo4_processed.PNG"}],
       "operations": ["splitQuadrants=True","resize=1.5","blur=25"]
     }
     response = client.post(

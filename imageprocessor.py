@@ -20,11 +20,13 @@ def ProcessRequest(request=Request):
     print("Initialized",len(imageProcessors),"processors.")
     for processor in imageProcessors:
         processor.performOperations(request.operations)
-    print("Finished processing images")
+    print("Processed",len(imageProcessors),"images.")
+    for processor in imageProcessors:
+        processor.saveResults()
 
 class ImageProcessor():
     def __init__(self, image):
-        self.DEBUG_MODE = True
+        self.DEBUG_MODE = False
         self.inputPath = image.input
         self.outputPath = image.output
         self.outputFileName, self.outputFileFormat = self.getImageNameAndFormat(image.output)
@@ -92,6 +94,16 @@ class ImageProcessor():
         self.images = processedImages
         print("Blurred",len(self.images),"image(s)")
         self.debugImshow("Blurred",processedImages[0])
+
+    def saveResults(self):
+        if len(self.images)==1:
+            cv2.imwrite(self.outputPath, self.images[0])
+        else:
+            N = 1
+            for img in self.images:
+                cv2.imwrite("{}_{}{}".format(self.outputFileName,N,self.outputFileFormat), img)
+                N += 1
+        print("Saved image processing results")
 
     def exportPng(self):
         print("export png")
