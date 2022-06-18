@@ -53,3 +53,10 @@ The blur kernelSize is an integer that indicates the Gaussian blur kernel size. 
 # [2] Installation and first run
 
 # [3] Extensive testing using automated pytests
+
+# [4] Time log
+
+    2 hours research
+    4 hours development
+    1 hour testing    
+    1 hours documentation & installation steps
