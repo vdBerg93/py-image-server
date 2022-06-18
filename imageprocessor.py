@@ -4,6 +4,8 @@ from typing import List
 import cv2
 from pydantic import BaseModel
 
+TESTING_CONCURRENCY = True
+
 class Image(BaseModel):
     input: str
     output: str
@@ -11,8 +13,6 @@ class Image(BaseModel):
 class Request(BaseModel):
     images: List[Image] = []
     operations: List[str] | None = None
-
-TESTING_CONCURRENCY = False
 
 def ProcessRequest(request=Request):
     if TESTING_CONCURRENCY:

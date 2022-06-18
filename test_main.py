@@ -77,7 +77,7 @@ def test_create_request_4_allcombinations():
     assert response.json() == test_json
 
 #Test 2: splitting the images and scaling to original size
-def test_create_request_5():
+def test_create_request_5_multiplecombinations():
     inputPath = "testimages"
     outputPath = os.path.join("testoutput","test5_randomcombinations")
     test_json = {
