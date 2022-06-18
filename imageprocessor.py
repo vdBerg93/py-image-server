@@ -2,6 +2,7 @@ from typing import List
 from pydantic import BaseModel
 import os
 import cv2
+import time
 
 class Image(BaseModel):
     input: str
@@ -11,7 +12,12 @@ class Request(BaseModel):
     images: List[Image] = []
     operations: List[str] | None = None
 
+TESTING_CONCURRENCY = False
+
 def ProcessRequest(request=Request):
+    if TESTING_CONCURRENCY:
+        print("In concurrency testing mode. Sleeping for 30 seconds...")
+        time.sleep(30)
     imageProcessors = []
     for image in request.images:
         processor = ImageProcessor(image)
@@ -26,7 +32,7 @@ def ProcessRequest(request=Request):
 
 class ImageProcessor():
     def __init__(self, image):
-        self.DEBUG_MODE = False
+        self.TESTING_PLOTS = False
         self.inputPath = image.input
         self.outputPath = image.output
         self.outputFileName, self.outputFileFormat = self.getImageNameAndFormat(image.output)
@@ -43,16 +49,20 @@ class ImageProcessor():
             arguments = itemFields[1]
             print("Method:",method,"| arguments:",arguments)
             getattr(self, method)(arguments)
-        if self.DEBUG_MODE:
+        if self.TESTING_PLOTS:
             cv2.waitKey(0)
 
     def readImage(self):
-        try:
+        if os.path.isfile(self.inputPath):
             image = cv2.imread(self.inputPath)
-            self.images.append(image)
-            return True
-        except:
-            print("FAILED TO READ IMAGE:",self.inputPath)
+            if image is not None:
+                self.images.append(image)
+                return True
+            else:
+                print("Failed to read image from file:",self.inputPath)
+                return False
+        else:
+            print("File doesnt exist:",self.inputPath)
             return False
 
     def getImageNameAndFormat(self,path):
@@ -61,6 +71,9 @@ class ImageProcessor():
 
     def resize(self, arguments=str):
         scaling = float(arguments)
+        if scaling<=0 or scaling >= 100:
+            print("Resize scaling factor",scaling,"out of bounds [0,100]. Skipping operation")
+            return
         processedImages = []
         for img in self.images:
             width = int(img.shape[1] * scaling)
@@ -72,7 +85,10 @@ class ImageProcessor():
         self.debugImshow("Resizing",self.images[0])
 
 
-    def splitQuadrants(self, arguments=str):
+    def splitQuadrants(self, argument=str):
+        if argument == "None" or argument == "False":
+            print("Split argument is",argument,". Skipping quadrant splitting.")
+            return
         processedImages = []
         for img in self.images:
             half_width = int(img.shape[0]/2)
@@ -87,15 +103,21 @@ class ImageProcessor():
 
 
     def blur(self, argument):
-        blurFactor = int(argument)
+        kernelSize = int(argument)
+        if kernelSize < 0:
+            print("Guassian blur kernel size (",kernelSize,") should be >=0. Skipping blur.")
+            return
         processedImages = []
         for img in self.images:
-            processedImages.append(cv2.GaussianBlur(img,(blurFactor,blurFactor),cv2.BORDER_DEFAULT))
+            processedImages.append(cv2.GaussianBlur(img,(kernelSize,kernelSize),cv2.BORDER_DEFAULT))
         self.images = processedImages
         print("Blurred",len(self.images),"image(s)")
         self.debugImshow("Blurred",processedImages[0])
 
     def saveResults(self):
+        folder = os.path.dirname(self.outputPath)
+        if not os.path.exists(folder):
+            os.mkdir(folder)
         if len(self.images)==1:
             cv2.imwrite(self.outputPath, self.images[0])
         else:
@@ -105,13 +127,7 @@ class ImageProcessor():
                 N += 1
         print("Saved image processing results")
 
-    def exportPng(self):
-        print("export png")
-
-    def exportJpg(self):
-        print("export jpg")
-
     def debugImshow(self, plotname,img):
-        if self.DEBUG_MODE:
+        if self.TESTING_PLOTS:
             cv2.imshow(plotname,img)
 
