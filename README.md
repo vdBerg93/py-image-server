@@ -1,4 +1,6 @@
 # py-image-server
+Author: **Berend van den Berg** [[GitHub]](https://github.com/vdBerg93), [[LinkedIn]](https://www.linkedin.com/in/berend-van-den-berg/)
+
 A HTTP server which provides flexible image processing functionality.
 The HTTP server is realized with fastAPI, running through uvicorn.
 The image processing functionalities are implemented with opencv.
