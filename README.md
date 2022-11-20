@@ -197,9 +197,3 @@ Example output:
 
 Here, no processors are actually spawned since the test messages are empty. 
 However, testing concurrency this is okay.
-
-# [4] Development time log
-
-    1.5 hour research HTTP server, API & Concurrency
-    5 hours development & testing 
-    1.5 hours documentation & installation steps
